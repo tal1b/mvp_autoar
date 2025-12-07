@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Employee Management System{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    {% if session.user_id %}
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="nav-title">Employee Management System</h1>
+            <div class="nav-user">
+                <span>User: {{ session.name or session.username }} ({{ 'Manager' if session.role == 'manager' else 'Employee' }})</span>
+                <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a>
+            </div>
+        </div>
+        <div class="nav-menu">
+            {% if session.role == 'manager' %}
+            <a href="{{ url_for('dashboard') }}" class="nav-link">🏠 Dashboard</a>
+            <a href="{{ url_for('employees') }}" class="nav-link">👥 Employees</a>
+            <a href="{{ url_for('tasks') }}" class="nav-link">📋 Tasks</a>
+            <a href="{{ url_for('salaries') }}" class="nav-link">💰 Salaries</a>
+            <a href="{{ url_for('shifts') }}" class="nav-link">🕐 Shifts</a>
+            {% else %}
+            <a href="{{ url_for('my_tasks') }}" class="nav-link">📋 My Tasks</a>
+            <a href="{{ url_for('my_profile') }}" class="nav-link">👤 My Profile</a>
+            <a href="{{ url_for('salaries') }}" class="nav-link">💰 My Salaries</a>
+            <a href="{{ url_for('shifts') }}" class="nav-link">🕐 My Shifts</a>
+            {% endif %}
+        </div>
+    </nav>
+    {% endif %}
+    
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
+

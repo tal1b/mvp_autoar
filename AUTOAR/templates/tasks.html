@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}Tasks - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>📋 {{ 'All Tasks' if is_manager else 'My Tasks' }}</h2>
+    {% if is_manager %}
+    <div class="header-actions">
+        <a href="{{ url_for('add_task') }}" class="btn btn-primary">
+            ✨ Create Task
+        </a>
+        <div class="export-buttons">
+            <a href="{{ url_for('export_data', data_type='tasks', format='csv') }}" class="btn btn-secondary btn-sm">📊 CSV</a>
+            <a href="{{ url_for('export_data', data_type='tasks', format='excel') }}" class="btn btn-secondary btn-sm">📈 Excel</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<div class="filters">
+    <form method="GET" action="{{ url_for('tasks') }}" class="filter-form">
+        <div class="form-group">
+            <input type="text" name="search" placeholder="Search by title..." 
+                   value="{{ search }}" class="form-control">
+        </div>
+        <div class="form-group">
+            <select name="status" class="form-control">
+                <option value="">All Statuses</option>
+                <option value="not_started" {% if status_filter == 'not_started' %}selected{% endif %}>Not Started</option>
+                <option value="in_progress" {% if status_filter == 'in_progress' %}selected{% endif %}>In Progress</option>
+                <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>Completed</option>
+            </select>
+        </div>
+        {% if is_manager %}
+        <div class="form-group">
+            <select name="employee" class="form-control">
+                <option value="">All Employees</option>
+                {% for emp in employees %}
+                <option value="{{ emp.id }}" {% if employee_filter|string == emp.id|string %}selected{% endif %}>
+                    {{ emp.full_name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        {% endif %}
+        <button type="submit" class="btn btn-primary">Search</button>
+        <a href="{{ url_for('tasks') }}" class="btn btn-secondary">Reset</a>
+    </form>
+</div>
+
+{% if tasks %}
+<div class="table-container">
+    <table class="employees-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                {% if is_manager %}
+                <th>Employee</th>
+                {% endif %}
+                <th>Status</th>
+                <th>Deadline</th>
+                <th>Created</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.id }}</td>
+                <td>{{ task.title }}</td>
+                <td>{{ task.description or '-' }}</td>
+                {% if is_manager %}
+                <td>{{ task.employee_name }}</td>
+                {% endif %}
+                <td>
+                    <span class="status-badge status-{{ task.status }}">
+                        {% if task.status == 'not_started' %}⏳ Not Started
+                        {% elif task.status == 'in_progress' %}🔄 In Progress
+                        {% elif task.status == 'completed' %}✅ Completed
+                        {% else %}{{ task.status }}{% endif %}
+                    </span>
+                </td>
+                <td>
+                    {% if task.deadline %}
+                        <span class="deadline-date">{{ task.deadline }}</span>
+                    {% else %}
+                        <span class="no-deadline">—</span>
+                    {% endif %}
+                </td>
+                <td>{{ task.created_at[:10] if task.created_at else '-' }}</td>
+                <td class="actions">
+                    <a href="{{ url_for('edit_task', task_id=task.id) }}" class="btn btn-sm btn-edit">✏️ Edit</a>
+                    {% if is_manager %}
+                    <button onclick="deleteTask({{ task.id }})" class="btn btn-sm btn-delete">🗑️ Delete</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="empty-state">
+    <p>📋 No tasks found.</p>
+    {% if is_manager %}
+    <p class="empty-hint">Create the first task for an employee</p>
+    <a href="{{ url_for('add_task') }}" class="btn btn-primary">✨ Create First Task</a>
+    {% else %}
+    <p class="empty-hint">You have not been assigned any tasks yet</p>
+    {% endif %}
+</div>
+{% endif %}
+
+<script>
+function deleteTask(id) {
+    if (confirm('Are you sure you want to delete this task?')) {
+        fetch(`/task/delete/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                location.reload();
+            } else {
+                alert(data.message || 'Error deleting task');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error deleting task');
+        });
+    }
+}
+</script>
+{% endblock %}
