@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Edit' if task else 'Create' }} Task - Employee Management System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>📋 {{ 'Edit' if task else 'Create' }} Task</h2>
+    <a href="{{ url_for('tasks') }}" class="btn btn-secondary">← Back to List</a>
+</div>
+
+<div class="form-container">
+    <form method="POST" action="{{ url_for('edit_task', task_id=task.id) if task else url_for('add_task') }}" class="employee-form">
+        <div class="form-section">
+            <h3>Basic Information</h3>
+            
+            <div class="form-group">
+                <label for="title">
+                    <span class="label-icon">📝</span>
+                    Task Title *
+                </label>
+                <input type="text" id="title" name="title" 
+                       value="{{ task.title if task else '' }}" 
+                       placeholder="Enter task title"
+                       required>
+                <small class="form-hint">Brief description of the task</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">
+                    <span class="label-icon">📄</span>
+                    Description
+                </label>
+                <textarea id="description" name="description" rows="5" 
+                          placeholder="Add detailed description (optional)">{{ task.description if task else '' }}</textarea>
+                <small class="form-hint">Additional information about the task</small>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>Assignment & Deadlines</h3>
+            
+            {% if is_manager %}
+            <div class="form-group">
+                <label for="employee_id">
+                    <span class="label-icon">👤</span>
+                    Assign to Employee *
+                </label>
+                {% if employees %}
+                <select id="employee_id" name="employee_id" required>
+                    <option value="">-- Select Employee --</option>
+                    {% for emp in employees %}
+                    <option value="{{ emp.id }}" {% if task and task.employee_id == emp.id %}selected{% endif %}>
+                        {{ emp.full_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <small class="form-hint">Select the employee to assign this task to</small>
+                {% else %}
+                <div class="alert alert-error" style="margin-top: 0.5rem;">
+                    ⚠️ No available employees. Please register employees first.
+                </div>
+                <a href="{{ url_for('employees') }}" class="btn btn-secondary" style="margin-top: 0.5rem;">View Employees</a>
+                {% endif %}
+            </div>
+            {% elif task %}
+            <input type="hidden" name="employee_id" value="{{ task.employee_id }}">
+            {% endif %}
+            
+            <div class="form-group">
+                <label for="status">
+                    <span class="label-icon">⚡</span>
+                    Status *
+                </label>
+                <select id="status" name="status" required>
+                    <option value="not_started" {% if task and task.status == 'not_started' %}selected{% endif %}>⏳ Not Started</option>
+                    <option value="in_progress" {% if task and task.status == 'in_progress' %}selected{% endif %}>🔄 In Progress</option>
+                    <option value="completed" {% if task and task.status == 'completed' %}selected{% endif %}>✅ Completed</option>
+                </select>
+                <small class="form-hint">Current task completion status</small>
+            </div>
+            
+            <div class="form-group">
+                <label for="deadline">
+                    <span class="label-icon">📅</span>
+                    Deadline
+                </label>
+                <input type="date" id="deadline" name="deadline" 
+                       value="{{ task.deadline if task and task.deadline else '' }}">
+                <small class="form-hint">Task completion deadline</small>
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-large">
+                {{ '💾 Save Changes' if task else '✨ Create Task' }}
+            </button>
+            <a href="{{ url_for('tasks') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
