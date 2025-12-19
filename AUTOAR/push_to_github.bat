@@ -58,3 +58,5 @@ git remote set-url origin https://github.com/tal1b/mvp_autoar.git
 
 pause
 
+
+

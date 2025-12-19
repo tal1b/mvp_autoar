@@ -265,3 +265,5 @@ And employees can:
 This MVP focuses on solving the core problem of centralized employee management for small businesses. By keeping the feature set minimal and focused, we can quickly validate whether the solution addresses real user needs before investing in advanced features. The web-based approach ensures easy access and deployment, while SQLite provides a simple database solution that can be upgraded later if needed.
 
 
+
+
