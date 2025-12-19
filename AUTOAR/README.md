@@ -76,10 +76,8 @@ Additional Documents
 
 Links to product documents:
 
-[PRD](https://C:\Users\Tamerlan\Desktop\AUTOAR\prd.md)
+[PRD](AUTOAR/prd.md)
 
-[User Stories](https://C:\Users\Tamerlan\Desktop\AUTOAR\User_Stories.md)
-
-[Architecture](https://)
+[User Stories](AUTOAR/User_Stories.md)
 
 [API Description](https://)
