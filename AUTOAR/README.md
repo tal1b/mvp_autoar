@@ -1,230 +1,85 @@
-# Employee Management System
+AutoAR
+Overview
 
-Система управления сотрудниками с веб-интерфейсом, регистрацией пользователей и базой данных SQLite.
+AutoAR is a web-based Human Resource Management MVP designed to automate and simplify basic employee administration processes.
 
-## Функции
+The product solves the following problem:
+Small teams and organizations often manage employees, shifts, tasks, and payroll manually using spreadsheets or disconnected tools, which leads to errors, low transparency, and inefficiency.
 
-### Регистрация и авторизация
+The target user group includes:
+Small businesses, startups, and internal HR departments that require a lightweight, centralized system for workforce management.
 
-- ✅ **Регистрация пользователей** с выбором роли (Менеджер или Сотрудник)
-- ✅ **Авторизация** по логину и паролю
-- ✅ **Личный кабинет** на основе уникального ID пользователя
-- ✅ **Выход из системы** с очисткой сессии
+Tech Stack
 
-### Роли пользователей
+List of main technologies:
 
-#### Менеджер
-- Просмотр списка всех сотрудников
-- Добавление задач сотрудникам
-- Назначение дедлайнов для задач
-- Назначение смен сотрудникам
-- Просмотр зарплат всех сотрудников
-- Просмотр статистики
-- Экспорт данных
+Front end:
+HTML5, CSS3, Jinja2 Templates
 
-#### Сотрудник
-- Просмотр своих задач
-- Просмотр своих дедлайнов
-- Просмотр своих смен
-- Просмотр своей зарплаты
-- Редактирование статуса своих задач
+Back end:
+Python, Flask
 
-### Управление задачами
+Database:
+SQLite
 
-- ✅ Создание задач для сотрудников (менеджер)
-- ✅ Установка дедлайнов для каждой задачи
-- ✅ Просмотр статуса задач (не начато/в процессе/выполнено)
-- ✅ Редактирование задач (сотрудники могут менять статус своих задач)
-- ✅ Поиск и фильтрация задач
+Other tools:
+Werkzeug (authentication utilities), Flask session management
 
-### Зарплаты и смены
+Project Structure
 
-- ✅ Назначение зарплаты сотруднику (фиксированная или почасовая)
-- ✅ Установка смен и расписания работы
-- ✅ Автоматический расчет часов работы
-- ✅ Отображение зарплаты за период и истории выплат
-- ✅ Фильтрация по сотруднику и периоду
+Short explanation of main folders:
 
-### Статистика (для менеджера)
+/AUTOAR
+ ├── app.py              # Main Flask application
+ ├── templates/          # HTML templates (UI pages)
+ ├── static/             # CSS styles and static assets
+ ├── autoar.db           # SQLite database
+ ├── .env.example        # Example environment variables
+ └── docs/               # Project documentation files
 
-- ✅ Количество сотрудников по отделам
-- ✅ Количество задач по статусу
-- ✅ Общая сумма зарплат за текущий месяц
-- ✅ Общее количество сотрудников и задач
+How to Run the Project
 
-### Экспорт данных
+System requirements:
 
-- ✅ Экспорт сотрудников в CSV/Excel
-- ✅ Экспорт задач в CSV/Excel
-- ✅ Экспорт зарплат в CSV/Excel
-- ✅ Экспорт смен в CSV/Excel
+Python 3.9 or higher
 
-## Установка и запуск
+pip package manager
 
-### Требования
+Virtual environment tool (recommended)
 
-- Python 3.7 или выше
-- pip
+Installation steps:
 
-### Шаги установки
+Clone the repository
+git clone https://github.com/tal1b/autoar.git
 
-1. Установите зависимости:
-```bash
-pip install -r requirements.txt
-```
+Create and activate a virtual environment
+python -m venv venv
+source venv/bin/activate (Linux/Mac) or venv\Scripts\activate (Windows)
 
-2. Запустите приложение:
-```bash
+Install dependencies
+pip install flask
+
+Start command:
+
 python app.py
-```
 
-3. Откройте браузер и перейдите по адресу:
-```
+
+The application will be available at:
 http://localhost:5000
-```
 
-## Использование
+How to Run Tests
 
-### Регистрация
+Test command:
 
-1. На странице входа нажмите "Зарегистрироваться"
-2. Заполните форму:
-   - Имя
-   - Логин (уникальный)
-   - Пароль
-   - Роль (Менеджер или Сотрудник)
-3. После регистрации войдите в систему
+python -m unittest
+Additional Documents
 
-### Тестовые учетные записи
+Links to product documents:
 
-При первом запуске создаются тестовые учетные записи:
+[PRD](https://C:\Users\Tamerlan\Desktop\AUTOAR\prd.md)
 
-**Менеджер:**
-- Логин: `manager`
-- Пароль: `manager123`
+[User Stories](https://C:\Users\Tamerlan\Desktop\AUTOAR\User_Stories.md)
 
-**Сотрудник:**
-- Логин: `employee`
-- Пароль: `employee123`
+[Architecture](https://)
 
-### Для менеджера:
-
-1. Войдите в систему как менеджер
-2. На главной странице (Dashboard) вы увидите статистику
-3. Используйте навигационное меню:
-   - **Сотрудники** — просмотр списка всех сотрудников
-   - **Задачи** — создание и управление задачами
-   - **Зарплаты** — управление зарплатами
-   - **Смены** — управление расписанием работы
-4. Используйте фильтры и поиск для быстрого нахождения данных
-5. Экспортируйте данные в CSV или Excel
-
-### Для сотрудника:
-
-1. Войдите в систему как сотрудник
-2. Просматривайте свои задачи, зарплаты и смены
-3. Редактируйте статус своих задач
-
-## Структура проекта
-
-```
-AUTOAR/
-├── app.py                      # Основное Flask приложение
-├── requirements.txt            # Зависимости Python
-├── employees.db               # База данных SQLite (создается автоматически)
-├── templates/                 # HTML шаблоны
-│   ├── base.html             # Базовый шаблон
-│   ├── login.html            # Страница входа
-│   ├── register.html         # Страница регистрации
-│   ├── dashboard.html        # Главная страница (статистика)
-│   ├── employees.html        # Список сотрудников
-│   ├── tasks.html            # Список задач
-│   ├── task_form.html        # Форма задачи
-│   ├── salaries.html         # Список зарплат
-│   ├── salary_form.html      # Форма зарплаты
-│   ├── shifts.html           # Список смен
-│   └── shift_form.html       # Форма смены
-└── static/                    # Статические файлы
-    └── css/
-        └── style.css         # Стили CSS
-```
-
-## Структура базы данных
-
-### Таблица users
-- id (уникальный ID пользователя)
-- name (имя пользователя)
-- username (логин, уникальный)
-- password (хешированный пароль)
-- role (роль: manager или employee)
-- employee_id (ID сотрудника, если роль = employee)
-
-### Таблица employees
-- id (уникальный ID сотрудника)
-- full_name (ФИО)
-- position (должность)
-- department (отдел)
-- start_date (дата начала работы)
-- email (email)
-- phone (телефон)
-
-### Таблица tasks
-- id (уникальный ID задачи)
-- title (название)
-- description (описание)
-- employee_id (ID сотрудника)
-- status (статус: not_started, in_progress, completed)
-- deadline (дедлайн)
-- created_at (дата создания)
-
-### Таблица salaries
-- id (уникальный ID)
-- employee_id (ID сотрудника)
-- salary_type (тип: fixed или hourly)
-- amount (сумма)
-- hourly_rate (почасовая ставка)
-- period_start (начало периода)
-- period_end (конец периода)
-- created_at (дата создания)
-
-### Таблица shifts
-- id (уникальный ID)
-- employee_id (ID сотрудника)
-- shift_date (дата смены)
-- start_time (время начала)
-- end_time (время окончания)
-- hours (количество часов)
-
-## Технологии
-
-- **Backend:** Flask (Python)
-- **База данных:** SQLite
-- **Frontend:** HTML, CSS, JavaScript
-- **Аутентификация:** Сессии Flask с хешированием паролей
-- **Экспорт:** CSV, Excel (openpyxl)
-
-## Особенности реализации
-
-- **Безопасность:** Хеширование паролей с использованием Werkzeug
-- **Валидация:** Проверка данных на стороне сервера
-- **UX:** Современный адаптивный интерфейс
-- **Производительность:** Оптимизированные SQL-запросы
-- **Масштабируемость:** Модульная структура кода
-- **Автоматическая миграция:** База данных автоматически обновляется при изменениях схемы
-
-## Безопасность
-
-⚠️ **Важно:** Для production использования необходимо:
-
-- Изменить секретный ключ в `app.py`
-- Использовать более безопасное хранение паролей
-- Добавить защиту от CSRF
-- Настроить HTTPS
-- Добавить более строгую валидацию входных данных
-- Реализовать rate limiting
-- Добавить логирование действий
-- Настроить резервное копирование базы данных
-
-## Лицензия
-
-Этот проект создан в образовательных целях.
+[API Description](https://)
