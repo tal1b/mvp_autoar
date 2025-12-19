@@ -76,8 +76,8 @@ Additional Documents
 
 Links to product documents:
 
-[PRD](AUTOAR/prd.md)
+[PRD](prd.md)
 
-[User Stories](AUTOAR/User_Stories.md)
+[User Stories](User_Stories.md)
 
-[API Description](https://)
+[API Description]()
